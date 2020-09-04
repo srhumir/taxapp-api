@@ -17,3 +17,34 @@ class CustomerDto:
         'password': fields.String(required=False, description='customer password'),
         'avatar': fields.Raw(required=False, description='customer avatar')
     })
+
+
+class BusinessDto:
+    api = Namespace('business', description='Business related operations')
+    business = api.model('business', {
+        'id':fields.Integer(required=False,
+                            description=('business id, providing id is required for editing '
+                                         'an existing business')),
+        'customerid': fields.Integer(required=True,
+                                     description='The customer handling this business'),
+        'consultantid': fields.Integer(required=False,
+                                       description='The tax consultant id for this business'),
+        'name': fields.String(required=True,
+                              description='Name of the business'),
+        'email': fields.String(required=False,
+                               description='Email of the business'),
+        'phone': fields.String(required=False,
+                               description='Phone number of the business'),
+        'web': fields.String(required=False,
+                             description='Web address of the business'),
+        'type': fields.String(required=False,
+                             description='Type of the business'),
+        'categoryid': fields.Integer(required=False,
+                                     description='The id of the category of the business'),
+        'peridicalsend': fields.Boolean(required=False,
+                                        description=('Should the reports be send periodically '
+                                                     'to the tax consultant')),
+        'peridicaldate': fields.Boolean(required=False,
+                                        description='time of next automatic report send')
+    })
+

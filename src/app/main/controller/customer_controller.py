@@ -20,7 +20,7 @@ class CustomerList(Resource):
     @api.doc('create a new customer or edit an existing one')
     @api.expect(_customer, validate=True)
     def post(self):
-        """Creates a new Customer or edit an existing one """
+        """Creates a new customer or edit an existing one """
         data = request.json
         return save_or_edit_customer(data=data)
 

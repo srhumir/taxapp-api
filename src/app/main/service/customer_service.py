@@ -79,8 +79,8 @@ def edit_customer(data: dict):
         customer_for_history = CustomerHistory(
             id=old_customer.id,
             version=old_customer.version,
-            lastmodified=old_customer.lastmodified,
-            created=datetime.datetime.utcnow(),
+            lastmodified=datetime.datetime.utcnow(),
+            created=old_customer.created,
             title=old_customer.title,
             salutation=old_customer.salutation,
             firstname=old_customer.firstname,
