@@ -2,7 +2,6 @@ import datetime
 
 from main import db
 from ..model.business import Busines, BusinesHistory
-from ..model.customer import Customer
 
 
 def save_or_edit_business(data: dict):
