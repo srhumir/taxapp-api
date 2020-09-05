@@ -2,7 +2,8 @@ from flask import request
 from flask_restplus import Resource
 
 from ..util.dto import BusinessDto
-from ..service.business_service import save_or_edit_business, get_all_businesss, get_a_business
+from ..service.business_service import save_or_edit_business, get_all_businesss, get_a_business,\
+    get_all_businesses_from_a_customers
 
 api = BusinessDto.api
 _business = BusinessDto.business
@@ -38,3 +39,18 @@ class Customer(Resource):
             api.abort(404)
         else:
             return business
+
+
+@api.route('/filter_by_customer/<int:customer_id>')
+@api.param('customer_id', 'The customer identifier')
+@api.response(404, 'Business not found.')
+class Customer(Resource):
+    @api.doc('get all the businesses belonging to a customer')
+    @api.marshal_list_with(_business)
+    def get(self, customer_id):
+        """get all the businesses belonging to a customer"""
+        businesses = get_all_businesses_from_a_customers(customer_id)
+        if not businesses:
+            api.abort(404)
+        else:
+            return businesses

@@ -2,6 +2,7 @@ import datetime
 
 from main import db
 from ..model.business import Busines, BusinesHistory
+from ..model.customer import Customer
 
 
 def save_or_edit_business(data: dict):
@@ -109,3 +110,5 @@ def save_changes_edit_business(old_data: BusinesHistory, new_data_dict: dict):
     db.session.commit()
 
 
+def get_all_businesses_from_a_customers(customer_id):
+    return Busines.query.filter_by(customerid=customer_id).all()

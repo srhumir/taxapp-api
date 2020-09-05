@@ -4,14 +4,6 @@ from main import db
 from ..model.customer import Customer, CustomerHistory
 
 
-def save_or_edit_customer(data: dict):
-    customer_id = data.get('id')
-    if customer_id is None:
-        return save_new_customer(data)
-    else:
-        return edit_customer(data)
-
-
 def save_new_customer(data):
     customer = Customer.query.filter_by(email=data['email']).first()
     if not customer:
@@ -62,6 +54,10 @@ def get_a_customer(customer_id):
     return Customer.query.filter_by(id=customer_id).first()
 
 
+def get_a_customer_by_email(email):
+    return Customer.query.filter_by(email=email).first()
+
+
 def save_changes_new_customer(data):
     db.session.add(data)
     db.session.commit()
@@ -108,8 +104,6 @@ def edit_customer(data: dict):
 
 def save_changes_edit_customer(old_data: CustomerHistory, new_data_dict: dict):
     db.session.add(old_data)
-    db.session.query(Customer).filter_by(id=new_data_dict['id']).\
+    db.session.query(Customer).filter_by(id=new_data_dict['id']). \
         update(new_data_dict)
     db.session.commit()
-
-
