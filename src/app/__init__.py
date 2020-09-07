@@ -9,9 +9,9 @@ from main.controller.business_controller import api as business_ns
 blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint,
-          title='FLASK RESTPLUS API BOILER-PLATE WITH JWT',
+          title='FLASK RESTPLUS API for rekloud-taxapp',
           version='1.0',
-          description='a boilerplate for flask restplus web service'
+          description='The backend api for rekloud-taxapp'
           )
 
 api.add_namespace(customer_ns, path='/customer')
