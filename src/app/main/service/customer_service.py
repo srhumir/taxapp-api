@@ -63,9 +63,9 @@ def save_changes_new_customer(data):
     db.session.commit()
 
 
-def edit_customer(data: dict):
+def edit_customer(customer_id, data: dict):
     try:
-        customer_id = data['id']
+        # customer_id = data['id']
         old_customer = get_a_customer(customer_id)
         last_version = old_customer.version
         new_customer_dict = produce_new_customer_dict(data)
@@ -73,7 +73,7 @@ def edit_customer(data: dict):
         new_customer_dict['version'] = last_version + 1
 
         customer_for_history = CustomerHistory(
-            id=old_customer.id,
+            id=customer_id,
             version=old_customer.version,
             lastmodified=datetime.datetime.utcnow(),
             created=old_customer.created,

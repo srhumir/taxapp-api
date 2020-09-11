@@ -1,25 +1,19 @@
 from flask_restplus import Namespace, fields
 
-new_customer_dict = {
-    'salutation': fields.String(required=False, description='customer salutation'),
-    'title': fields.String(required=False, description='customer tile (Dr. Prof, etc)'),
-    'firstname': fields.String(required=True, description='customer first name'),
-    'lastname': fields.String(required=True, description='customer last name'),
-    'email': fields.String(required=True, description='customer email address'),
-    'mobile': fields.String(required=False, description='customer cell phone number'),
-    'username': fields.String(required=True, description='customer username '),
-    'password': fields.String(required=False, description='customer password'),
-    'avatar': fields.Raw(required=False, description='customer avatar')
-}
-
 
 class CustomerDto:
     api = Namespace('customer', description='Customer related operations')
-    new_customer = api.model('customer', new_customer_dict)
-    existing_customer = api.model('customer', dict(
-        {'id': fields.Integer(required=True, description='customer id')},
-        **new_customer_dict)
-                                  )
+    customer = api.model('customer', {
+        'salutation': fields.String(required=False, description='customer salutation'),
+        'title': fields.String(required=False, description='customer tile (Dr. Prof, etc)'),
+        'firstname': fields.String(required=True, description='customer first name'),
+        'lastname': fields.String(required=True, description='customer last name'),
+        'email': fields.String(required=True, description='customer email address'),
+        'mobile': fields.String(required=False, description='customer cell phone number'),
+        'username': fields.String(required=True, description='customer username '),
+        'password': fields.String(required=False, description='customer password'),
+        'avatar': fields.Raw(required=False, description='customer avatar')
+    })
 
 
 new_business_dict = {
