@@ -62,9 +62,8 @@ def save_changes_new_business(data):
     db.session.commit()
 
 
-def edit_business(data: dict):
+def edit_business(business_id: int, data: dict):
     try:
-        business_id = data['id']
         old_business = get_a_business(business_id)
         last_version = old_business.version
         new_business_dict = produce_new_business_dict(data)
