@@ -4,14 +4,6 @@ from main import db
 from ..model.business import Busines, BusinesHistory
 
 
-def save_or_edit_business(data: dict):
-    id = data.get('id')
-    if id is None:
-        return save_new_business(data)
-    else:
-        return edit_business(data)
-
-
 def save_new_business(data):
     business = Busines.query.filter_by(customerid=data['customerid'], name=data['name']).first()
     if not business:

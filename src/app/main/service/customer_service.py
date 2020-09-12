@@ -85,7 +85,7 @@ def edit_customer(customer_id, data: dict):
             mobile=old_customer.mobile,
             active=False,
             username=old_customer.username,
-            password=old_customer.password,
+            password=old_customer.password_hash,
             avatar=old_customer.avatar
         )
         save_changes_edit_customer(customer_for_history, new_customer_dict)
