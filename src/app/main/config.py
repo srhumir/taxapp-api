@@ -2,7 +2,7 @@ import os
 
 postgres_local_base = os.environ.get('DATABASE_URL',
                                      'postgresql://postgres:Pass2020!@localhost:5432')
-print('postgres_local_base', postgres_local_base)
+# print('postgres_local_base', postgres_local_base)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -39,3 +39,5 @@ config_by_name = dict(
 )
 
 key = Config.SECRET_KEY
+token_validity_in_days = 14
+

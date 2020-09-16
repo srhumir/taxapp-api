@@ -1,6 +1,6 @@
 import datetime
 
-from main import db
+from .. import db
 from ..model.business import Busines, BusinesHistory
 
 

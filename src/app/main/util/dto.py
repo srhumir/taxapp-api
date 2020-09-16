@@ -10,9 +10,11 @@ class CustomerDto:
         'lastname': fields.String(required=True, description='customer last name'),
         'email': fields.String(required=True, description='customer email address'),
         'mobile': fields.String(required=False, description='customer cell phone number'),
+        'role': fields.String(required=True,
+                              description='role of customer system_admin, admin, user'),
         'username': fields.String(required=True, description='customer username '),
         'password': fields.String(required=False, description='customer password'),
-        'avatar': fields.Raw(required=False, description='customer avatar')
+        # 'avatar': fields.Raw(required=False, description='customer avatar')
     })
 
 
@@ -41,4 +43,12 @@ class BusinessDto:
                                             'to the tax consultant')),
         'peridicaldate': fields.Boolean(required=False,
                                         description='time of next automatic report send')
+    })
+
+
+class AuthDto:
+    api = Namespace('auth', description='authentication related operations')
+    customer_auth = api.model('auth_details', {
+        'email': fields.String(required=True, description='The email address'),
+        'password': fields.String(required=True, description='The user password '),
     })

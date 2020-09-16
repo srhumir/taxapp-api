@@ -1,6 +1,6 @@
 import datetime
 
-from main import db
+from .. import db, flask_bcrypt
 from ..model.customer import Customer, CustomerHistory
 
 
@@ -10,17 +10,13 @@ def save_new_customer(data):
         new_customer_dict = produce_new_customer_dict(data)
         new_customer = Customer(**new_customer_dict)
         save_changes_new_customer(new_customer)
-        response_object = {
-            'status': 'success',
-            'message': 'Successfully registered.'
-        }
-        return response_object, 201
+        return generate_token(user=customer)
     else:
         response_object = {
             'status': 'fail',
             'message': 'Customer already exists. Please Log in.',
         }
-        return response_object, 409
+        return response_object
 
 
 def produce_new_customer_dict(data: dict):
@@ -34,6 +30,7 @@ def produce_new_customer_dict(data: dict):
         email=data['email'],
         mobile=data.get('mobile'),
         active=True,
+        role=data['role'],
         username=data['username'],
         password=data.get('password'),
         avatar=data.get('avatar',
@@ -44,6 +41,29 @@ def produce_new_customer_dict(data: dict):
 
 def produce_avatar_from_name(first_name: str, last_name):
     return None
+
+
+def generate_token(user):
+    try:
+        # generate the auth token
+        auth_token = user.encode_auth_token(user.id, user.role)
+        response_object = {
+            'status': 'success',
+            'message': 'Successfully registered.',
+            'Authorization': auth_token.decode()
+        }
+        return response_object, 201
+    except Exception as e:
+        response_object = {
+            'status': 'fail',
+            'message': 'Some error occurred. Please try again.'
+        }
+        return response_object, 401
+
+
+def save_changes_new_customer(data):
+    db.session.add(data)
+    db.session.commit()
 
 
 def get_all_customers():
@@ -58,19 +78,14 @@ def get_a_customer_by_email(email):
     return Customer.query.filter_by(email=email).first()
 
 
-def save_changes_new_customer(data):
-    db.session.add(data)
-    db.session.commit()
-
-
 def edit_customer(customer_id, data: dict):
     try:
-        # customer_id = data['id']
         old_customer = get_a_customer(customer_id)
         last_version = old_customer.version
         new_customer_dict = produce_new_customer_dict(data)
         new_customer_dict['id'] = customer_id
         new_customer_dict['version'] = last_version + 1
+        new_customer_dict.pop('password')
 
         customer_for_history = CustomerHistory(
             id=customer_id,
@@ -85,9 +100,11 @@ def edit_customer(customer_id, data: dict):
             mobile=old_customer.mobile,
             active=False,
             username=old_customer.username,
-            password=old_customer.password_hash,
+            password_hash=old_customer.password_hash,
             avatar=old_customer.avatar
         )
+        print('new_customer_dict', new_customer_dict)
+        print('old_customer', old_customer.__dict__)
         save_changes_edit_customer(customer_for_history, new_customer_dict)
         response_object = {
             'status': 'success',
@@ -107,3 +124,4 @@ def save_changes_edit_customer(old_data: CustomerHistory, new_data_dict: dict):
     db.session.query(Customer).filter_by(id=new_data_dict['id']). \
         update(new_data_dict)
     db.session.commit()
+

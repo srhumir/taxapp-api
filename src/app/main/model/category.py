@@ -1,4 +1,4 @@
-from main import db
+from .. import db
 from sqlalchemy import BigInteger, Column, DateTime,ForeignKey, Text, text
 from sqlalchemy.orm import relationship
 from .relations import HIBERNATE_SEQUENCE

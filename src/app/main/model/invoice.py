@@ -1,4 +1,4 @@
-from main import db
+from .. import db
 from sqlalchemy import BigInteger, Boolean, Column, DateTime, Float, ForeignKey, \
     LargeBinary, Text, text
 from sqlalchemy.orm import relationship
