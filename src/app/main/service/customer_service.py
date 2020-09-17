@@ -2,6 +2,7 @@ import datetime
 
 from .. import db, flask_bcrypt
 from ..model.customer import Customer, CustomerHistory
+from ..config import trial_period_in_days
 
 
 def save_new_customer(data):
@@ -29,6 +30,8 @@ def produce_new_customer_dict(data: dict):
         lastname=data['lastname'],
         email=data['email'],
         mobile=data.get('mobile'),
+        subscription_expiration=(datetime.datetime.utcnow() +
+                                 datetime.timedelta(days=trial_period_in_days, seconds=5)),
         active=True,
         role=data['role'],
         username=data['username'],
@@ -45,8 +48,7 @@ def produce_avatar_from_name(first_name: str, last_name):
 
 def generate_token(user):
     try:
-        # generate the auth token
-        auth_token = user.encode_auth_token(user.id, user.role)
+        auth_token = user.encode_auth_token(user.id, user.role, user.subscription_expiration)
         response_object = {
             'status': 'success',
             'message': 'Successfully registered.',

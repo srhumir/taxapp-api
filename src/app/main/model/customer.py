@@ -28,6 +28,8 @@ class Customer(Base):
     email = Column(Text, nullable=False)
     mobile = Column(Text, nullable=False)
     role = Column(Text, nullable=False)
+    subscription_expiration = Column(DateTime(True), nullable=False,
+                                     server_default=text("statement_timestamp()"))
     active = Column(Boolean, nullable=False, server_default=text("true"))
     username = Column(Text, nullable=False)
     password_hash = Column(Text, nullable=True)
@@ -43,47 +45,6 @@ class Customer(Base):
 
     def check_password(self, password):
         return flask_bcrypt.check_password_hash(self.password_hash, password)
-
-    @staticmethod
-    def encode_auth_token(user_id, user_role):
-        """
-        Generates the Auth Token
-        :return: string
-        """
-        try:
-            payload = {
-                'exp': (datetime.datetime.utcnow()
-                        + datetime.timedelta(days=token_validity_in_days, seconds=5)),
-                'iat': datetime.datetime.utcnow(),
-                'sub': user_id,
-                'role': user_role
-            }
-            return jwt.encode(
-                payload,
-                key,
-                algorithm='HS256'
-            )
-        except Exception as e:
-            return e
-
-    @staticmethod
-    def decode_auth_token(auth_token):
-        """
-        Decodes the auth token
-        :param auth_token:
-        :return: integer|string
-        """
-        try:
-            payload = jwt.decode(auth_token, key)
-            is_blacklisted_token = BlacklistToken.check_blacklist(auth_token)
-            if is_blacklisted_token:
-                return 'Token blacklisted. Please log in again.'
-            else:
-                return payload['sub'], payload['role']
-        except jwt.ExpiredSignatureError:
-            return 'Signature expired. Please log in again.'
-        except jwt.InvalidTokenError:
-            return 'Invalid token. Please log in again.'
 
 
 class CustomerHistory(Base):
@@ -103,6 +64,8 @@ class CustomerHistory(Base):
     lastname = Column(Text, nullable=False)
     email = Column(Text, nullable=False)
     mobile = Column(Text, nullable=False)
+    subscription_expiration = Column(DateTime(True), nullable=False,
+                                     server_default=text("statement_timestamp()"))
     active = Column(Boolean, nullable=False, server_default=text("true"))
     username = Column(Text, nullable=False)
     password_hash = Column(Text, nullable=False)
