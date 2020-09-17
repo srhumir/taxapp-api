@@ -1,5 +1,6 @@
 from main.model.customer import Customer
 from main.service.blacklist_service import save_token
+from .encode_decode_tokens import encode_auth_token, decode_auth_token
 
 
 class Auth:
@@ -9,7 +10,7 @@ class Auth:
         try:
             user = Customer.query.filter_by(email=data.get('email')).first()
             if user and user.check_password(data.get('password')):
-                auth_token = user.encode_auth_token(user.id, user.role,
+                auth_token = encode_auth_token(user.id, user.role,
                                                     user.subscription_expiration)
                 if isinstance(auth_token, bytes):
                     print(auth_token, type(auth_token))
@@ -20,7 +21,7 @@ class Auth:
                     }
                     return response_object, 200
                 else:
-                    print(auth_token)
+                    print('wromg token:', auth_token)
                     raise Exception('sth is wrong')
 
             else:
@@ -46,7 +47,7 @@ class Auth:
         else:
             auth_token = ''
         if auth_token:
-            resp = Customer.decode_auth_token(auth_token)
+            resp = decode_auth_token(auth_token)
             if not isinstance(resp, str):
                 return save_token(token=auth_token)
             else:
@@ -67,7 +68,7 @@ class Auth:
     def get_logged_in_user(new_request):
         auth_token = new_request.headers.get('Authorization')
         if auth_token:
-            resp = Customer.decode_auth_token(auth_token)
+            resp = decode_auth_token(auth_token)
             if not isinstance(resp, str):
                 user = Customer.query.filter_by(id=resp).first()
                 response_object = {

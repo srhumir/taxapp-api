@@ -1,8 +1,9 @@
 import datetime
 
-from .. import db, flask_bcrypt
+from .. import db
 from ..model.customer import Customer, CustomerHistory
 from ..config import trial_period_in_days
+from ..authorization import generate_token
 
 
 def save_new_customer(data):
@@ -44,23 +45,6 @@ def produce_new_customer_dict(data: dict):
 
 def produce_avatar_from_name(first_name: str, last_name):
     return None
-
-
-def generate_token(user):
-    try:
-        auth_token = user.encode_auth_token(user.id, user.role, user.subscription_expiration)
-        response_object = {
-            'status': 'success',
-            'message': 'Successfully registered.',
-            'Authorization': auth_token.decode()
-        }
-        return response_object, 201
-    except Exception as e:
-        response_object = {
-            'status': 'fail',
-            'message': 'Some error occurred. Please try again.'
-        }
-        return response_object, 401
 
 
 def save_changes_new_customer(data):
