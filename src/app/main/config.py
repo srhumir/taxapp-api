@@ -40,4 +40,5 @@ config_by_name = dict(
 
 key = Config.SECRET_KEY
 token_validity_in_days = 14
+trial_period_in_days = 14
 
