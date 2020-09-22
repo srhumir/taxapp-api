@@ -89,8 +89,6 @@ def edit_customer(customer_id, data: dict):
             password_hash=old_customer.password_hash,
             avatar=old_customer.avatar
         )
-        print('new_customer_dict', new_customer_dict)
-        print('old_customer', old_customer.__dict__)
         save_changes_edit_customer(customer_for_history, new_customer_dict)
         response_object = {
             'status': 'success',

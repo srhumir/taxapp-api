@@ -1,5 +1,5 @@
 from main.model.customer import Customer
-from main.service.blacklist_service import save_token
+from main.authorization.blacklist_service import save_token
 from .encode_decode_tokens import encode_auth_token, decode_auth_token
 
 

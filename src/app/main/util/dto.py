@@ -48,7 +48,7 @@ class BusinessDto:
 
 class AuthDto:
     api = Namespace('auth', description='authentication related operations')
-    customer_auth = api.model('auth_details', {
+    customer_auth = api.model('auth', {
         'email': fields.String(required=True, description='The email address'),
         'password': fields.String(required=True, description='The user password '),
     })

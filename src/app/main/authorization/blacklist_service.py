@@ -1,11 +1,10 @@
-from .. import db
-from ..model.blacklist import BlacklistToken
+from main import db
+from main.model.blacklist import BlacklistToken
 
 
 def save_token(token):
     blacklist_token = BlacklistToken(token=token)
     try:
-        # insert the token
         db.session.add(blacklist_token)
         db.session.commit()
         response_object = {
