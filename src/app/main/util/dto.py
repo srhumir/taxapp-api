@@ -46,6 +46,15 @@ class BusinessDto:
     })
 
 
+class CategoryDto:
+    api = Namespace('category', description='category related operations')
+    category = api.model('category', {
+        'id': fields.Integer(required=False, descritipn='id of the category'),
+        'categorytype': fields.String(required=True, descritipn='Type of the category'),
+        'name': fields.String(required=True, descritipn='Name of the category'),
+    })
+
+
 class AuthDto:
     api = Namespace('auth', description='authentication related operations')
     customer_auth = api.model('auth', {

@@ -1,7 +1,8 @@
 from .. import db
 from sqlalchemy import BigInteger, Column, DateTime,ForeignKey, Text, text
-from sqlalchemy.orm import relationship
+# from sqlalchemy.orm import relationship
 from .relations import HIBERNATE_SEQUENCE
+# from ..model.customer import Customer
 Base = db.Model
 metadata = Base.metadata
 
@@ -18,6 +19,5 @@ class Category(Base):
                      server_default=text("statement_timestamp()"))
     categorytype = Column(Text, nullable=False)
     name = Column(Text, nullable=False)
-    customerid = Column(ForeignKey('customer.id'), nullable=False)
-
-    customer = relationship('Customer')
+    # customerid = Column(ForeignKey('customer.id'), nullable=False)
+    # customer = relationship(Customer)
