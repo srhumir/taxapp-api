@@ -28,6 +28,7 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
+        repository: srhumir/taxapp-api
         command: build
         dockerfile: '$(Build.SourcesDirectory)/src/app/Dockerfile'
         tags: |
@@ -35,7 +36,7 @@ stages:
      - task: Docker@2
         displayName: Push image
         inputs:
-          containerRegistry:
+          containerRegistry: |
              PushToDockerHup
           repository: srhumir/taxapp-api
           command: push
