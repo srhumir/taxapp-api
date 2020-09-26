@@ -34,7 +34,7 @@ stages:
         tags: |
           $(tag)
           
-      - task: Docker@2
+    - task: Docker@2
       displayName: Push an image
       inputs:
         containerRegistry: PushToDockerHup
@@ -42,4 +42,3 @@ stages:
         command: push
         tags: |
           $(tag)
-            
