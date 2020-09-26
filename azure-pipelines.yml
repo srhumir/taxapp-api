@@ -33,3 +33,13 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/src/app/Dockerfile'
         tags: |
           $(tag)
+          
+      - task: Docker@2
+      displayName: Push an image
+      inputs:
+        containerRegistry: PushToDockerHup
+        repository: srhumir/taxapp-api
+        command: push
+        tags: |
+          $(tag)
+            
